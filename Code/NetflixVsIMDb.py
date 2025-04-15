@@ -3,6 +3,7 @@
 # -----------------------------------
 import pandas as pd
 import matplotlib.pyplot as plt
+import sqlite3
 
 # File paths (make sure the CSV files are in the "Data" folder)
 netflix_path = "Data/netflix_titles.csv"
@@ -24,6 +25,9 @@ netflix_df['release_year'] = pd.to_numeric(netflix_df['release_year'], errors='c
 # Clean IMDb titles (same process)
 imdb_df['Series_Title'] = imdb_df['Series_Title'].str.strip().str.lower()
 imdb_df['Released_Year'] = pd.to_numeric(imdb_df['Released_Year'], errors='coerce')
+
+# Fix duplicate column name
+imdb_df.rename(columns={"Director": "imdb_director"}, inplace=True)
 
 # -----------------------------------
 # STEP 3: Merge both datasets
@@ -95,5 +99,30 @@ print("Average IMDb Rating (Non-Netflix):", round(non_netflix_df['IMDB_Rating'].
 # Save the merged data to a new CSV in the Data folder
 output_path = "Data/netflix_imdb_merged.csv"
 merged_df.to_csv(output_path, index=False)
-
 print(f"CSV saved to: {output_path}")
+
+# -----------------------------------
+# STEP 7: Export to SQLite for SQL queries
+# -----------------------------------
+
+# Create a SQLite connection and save DataFrame to a table
+conn = sqlite3.connect("netflix_vs_imdb.db")
+merged_df.to_sql("netflix_imdb", conn, if_exists="replace", index=False)
+print("Merged data exported to SQLite database: netflix_vs_imdb.db")
+
+# -----------------------------------
+# STEP 8: Run QA-style SQL checks
+# -----------------------------------
+
+cursor = conn.cursor()
+
+print("\nTop 5 highest rated Netflix titles:")
+for row in cursor.execute("SELECT title, IMDB_Rating FROM netflix_imdb ORDER BY IMDB_Rating DESC LIMIT 5"):
+    print(row)
+
+print("\nChecking for ratings outside expected 0–10 range:")
+for row in cursor.execute("SELECT title, IMDB_Rating FROM netflix_imdb WHERE IMDB_Rating < 0 OR IMDB_Rating > 10"):
+    print(row)
+
+# Close the database connection
+conn.close()
