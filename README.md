@@ -26,3 +26,35 @@ This project analyzes how titles available on **Netflix** compare to the **IMDb 
   - Netflix titles: **8.00**
   - Non-Netflix titles: **7.94**
 - Netflix content in the Top 1000 performs just as well or slightly better than other top-rated content
+
+## How to Run
+
+1. Make sure Python is installed
+2. Install dependencies (if not already installed):
+   -pip install pandas matplotlib
+3. 3. Place the following CSVs in the `Data/` folder:
+- `netflix_titles.csv`
+- `imdb_top_1000.csv`
+
+4. Run the script: python Code/netflix_vs_imdb.py
+5. Sample SQL:
+
+## SQL Integration (QA-Focused)
+
+To showcase SQL use for quality assurance, the merged dataset is exported into a local SQLite database (`netflix_vs_imdb.db`). From there, basic validation queries are executed, including:
+
+- Retrieving top 5 highest-rated Netflix titles
+- Checking for invalid IMDb ratings outside the expected 0–10 range
+- Verifying data integrity
+
+```sql
+-- Top 5 highest rated Netflix titles
+SELECT title, IMDB_Rating 
+FROM netflix_imdb 
+ORDER BY IMDB_Rating DESC 
+LIMIT 5;
+
+-- Check for ratings outside valid range
+SELECT title, IMDB_Rating 
+FROM netflix_imdb 
+WHERE IMDB_Rating < 0 OR IMDB_Rating > 10;
