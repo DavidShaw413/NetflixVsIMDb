@@ -39,7 +39,14 @@ This project analyzes how titles available on **Netflix** compare to the **IMDb 
 4. Run the script: python Code/netflix_vs_imdb.py
 5. Sample SQL:
 
-## SQL Integration (QA-Focused)
+## Sample Output
+
+Below is a visualization of IMDb ratings for Netflix titles:
+
+![Histogram](Code/DistNetflix.png)
+![Histogram](Code/NetflixVNonNetflix.png)
+
+## SQL Integration
 
 To showcase SQL use for quality assurance, the merged dataset is exported into a local SQLite database (`netflix_vs_imdb.db`). From there, basic validation queries are executed, including:
 
@@ -51,7 +58,8 @@ To showcase SQL use for quality assurance, the merged dataset is exported into a
 -- Top 5 highest rated Netflix titles
 SELECT title, IMDB_Rating 
 FROM netflix_imdb 
-ORDER BY IMDB_Rating DESC 
+ORDER BY IMDB_Rating DESC
+
 LIMIT 5;
 
 -- Check for ratings outside valid range
