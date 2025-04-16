@@ -43,8 +43,8 @@ This project analyzes how titles available on **Netflix** compare to the **IMDb 
 
 Below is a visualization of IMDb ratings for Netflix titles:
 
-![Histogram](Code/DistNetflix.png)
-![Histogram](Code/NetflixVNonNetflix.png)
+![Histogram](Code/Images/DistNetflix.png)
+![Histogram](Code/Images/NetflixVNonNetflix.png)
 
 ## SQL Integration
 
