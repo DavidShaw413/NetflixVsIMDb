@@ -37,7 +37,7 @@ This project analyzes how titles available on **Netflix** compare to the **IMDb 
 - `imdb_top_1000.csv`
 
 4. Run the script: python Code/netflix_vs_imdb.py
-5. Sample SQL:
+5. Sample Output and SQL:
 
 ## Sample Output
 
